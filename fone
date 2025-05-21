@@ -1,0 +1,2191 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FonéticaPT - Aprende os Fenómenos Fonéticos</title>
+    <style>
+        :root {
+            --cor-primaria: #2e7d32;
+            --cor-secundaria: #4caf50;
+            --cor-terciaria: #8bc34a;
+            --cor-fundo: #f5f5f5;
+            --cor-texto: #333;
+            --cor-destaque: #ff5722;
+            --cor-correta: #4caf50;
+            --cor-incorreta: #f44336;
+            --fonte-principal: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --sombra: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--fonte-principal);
+            background-color: var(--cor-fundo);
+            color: var(--cor-texto);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--cor-primaria), var(--cor-secundaria));
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            box-shadow: var(--sombra);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 1.5rem 0 1rem;
+            color: var(--cor-primaria);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 1.2rem 0 0.8rem;
+            color: var(--cor-secundaria);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .intro {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            margin-top: -2rem;
+            box-shadow: var(--sombra);
+            position: relative;
+            z-index: 10;
+        }
+
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 2rem 0 1rem;
+            border-bottom: 2px solid var(--cor-secundaria);
+            padding-bottom: 0.5rem;
+        }
+
+        .tab {
+            background-color: #e0e0e0;
+            padding: 0.7rem 1.2rem;
+            border-radius: var(--radius) var(--radius) 0 0;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .tab:hover {
+            background-color: #d0d0d0;
+        }
+
+        .tab.active {
+            background-color: var(--cor-secundaria);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 0 var(--radius) var(--radius) var(--radius);
+            box-shadow: var(--sombra);
+            margin-bottom: 2rem;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fenomeno-card {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 1.2rem;
+            margin-bottom: 1.2rem;
+            box-shadow: var(--sombra);
+            border-left: 4px solid var(--cor-primaria);
+            transition: transform 0.3s ease;
+        }
+
+        .fenomeno-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .fenomeno-titulo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .fenomeno-titulo h3 {
+            margin: 0;
+        }
+
+        .fenomeno-conteudo {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .fenomeno-conteudo.aberto {
+            max-height: 1000px;
+            margin-top: 1rem;
+        }
+
+        .exemplos {
+            background-color: #f0f8ff;
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin: 1rem 0;
+        }
+
+        .destaque {
+            color: var(--cor-destaque);
+            font-weight: bold;
+        }
+
+        .exercicio {
+            background-color: #f0f8ff;
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            margin: 1.5rem 0;
+            box-shadow: var(--sombra);
+        }
+
+        .opcoes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .opcao {
+            background-color: white;
+            padding: 1rem;
+            border-radius: var(--radius);
+            cursor: pointer;
+            border: 2px solid #ddd;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .opcao:hover {
+            border-color: var(--cor-secundaria);
+            transform: translateY(-2px);
+        }
+
+        .opcao.selecionada {
+            border-color: var(--cor-secundaria);
+            background-color: #e8f5e9;
+        }
+
+        .opcao.correta {
+            border-color: var(--cor-correta);
+            background-color: #e8f5e9;
+        }
+
+        .opcao.incorreta {
+            border-color: var(--cor-incorreta);
+            background-color: #ffebee;
+        }
+
+        .feedback {
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin: 1rem 0;
+            display: none;
+        }
+
+        .feedback.sucesso {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            display: block;
+        }
+
+        .feedback.erro {
+            background-color: #ffebee;
+            color: #c62828;
+            display: block;
+        }
+
+        button {
+            background-color: var(--cor-secundaria);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        button:hover {
+            background-color: var(--cor-primaria);
+            transform: translateY(-2px);
+        }
+
+        .progresso {
+            background-color: #e0e0e0;
+            height: 10px;
+            border-radius: 5px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progresso-barra {
+            background-color: var(--cor-secundaria);
+            height: 100%;
+            width: 0;
+            transition: width 0.3s ease;
+        }
+
+        .categoria-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .categoria-card {
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--sombra);
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            border-top: 5px solid var(--cor-primaria);
+        }
+
+        .categoria-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .categoria-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--cor-secundaria);
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: var(--cor-terciaria);
+            color: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+
+        .explicacao {
+            background-color: #f9f9f9;
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin: 1rem 0;
+            border-left: 3px solid var(--cor-secundaria);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        th, td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: var(--cor-secundaria);
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+            border-bottom: 1px dotted var(--cor-primaria);
+        }
+
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            border-radius: var(--radius);
+            padding: 0.5rem;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .quiz-container {
+            margin: 2rem 0;
+        }
+
+        .quiz-pergunta {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .quiz-opcoes {
+            list-style-type: none;
+        }
+
+        .quiz-opcao {
+            background-color: white;
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            border: 2px solid #ddd;
+            transition: all 0.2s ease;
+        }
+
+        .quiz-opcao:hover {
+            border-color: var(--cor-secundaria);
+        }
+
+        .quiz-opcao.selecionada {
+            border-color: var(--cor-primaria);
+            background-color: #e8f5e9;
+        }
+
+        .quiz-resultado {
+            margin-top: 2rem;
+            text-align: center;
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            background-color: white;
+            box-shadow: var(--sombra);
+            display: none;
+        }
+
+        .quiz-pontuacao {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+
+        .quiz-explicacao {
+            margin-top: 1rem;
+        }
+
+        .quiz-progresso {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .exemplo-pronuncia {
+            background-color: #e8f5e9;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            display: inline-block;
+            margin: 0.2rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .exemplo-pronuncia:hover {
+            background-color: var(--cor-secundaria);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .categoria-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .opcoes {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            h3 {
+                font-size: 1.2rem;
+            }
+            
+            .tab {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        .search-container {
+            margin: 1rem 0;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border-radius: var(--radius);
+            border: 2px solid #ddd;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: var(--cor-secundaria);
+            outline: none;
+        }
+
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 0 0 var(--radius) var(--radius);
+            box-shadow: var(--sombra);
+            z-index: 100;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .search-result-item {
+            padding: 0.8rem 1rem;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+        }
+
+        .search-result-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .tab-content-iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+            border-radius: var(--radius);
+            box-shadow: var(--sombra);
+        }
+
+        .glossario-letra {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--cor-primaria);
+            margin: 1.5rem 0 0.5rem;
+            border-bottom: 2px solid var(--cor-secundaria);
+            padding-bottom: 0.5rem;
+        }
+
+        .glossario-item {
+            margin-bottom: 1rem;
+        }
+
+        .glossario-termo {
+            font-weight: bold;
+            color: var(--cor-secundaria);
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: var(--cor-secundaria);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: var(--sombra);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+        }
+
+        .back-to-top:hover {
+            background-color: var(--cor-primaria);
+            transform: translateY(-3px);
+        }
+
+        .alfabeto-fonetico {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            box-shadow: var(--sombra);
+            margin: 2rem 0;
+        }
+
+        .alfabeto-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .alfabeto-item {
+            background-color: #f5f5f5;
+            padding: 0.8rem;
+            border-radius: var(--radius);
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .alfabeto-item:hover {
+            background-color: var(--cor-terciaria);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .alfabeto-simbolo {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+        }
+
+        .alfabeto-exemplo {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .alfabeto-item:hover .alfabeto-exemplo {
+            color: #fff;
+        }
+
+        /* Modos escuro/claro */
+        .tema-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background-color: white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: var(--sombra);
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        .tema-toggle:hover {
+            transform: rotate(30deg);
+        }
+
+        .tema-icon {
+            font-size: 1.5rem;
+        }
+
+        .tema-escuro {
+            --cor-fundo: #212121;
+            --cor-texto: #f5f5f5;
+        }
+
+        .tema-escuro header {
+            background: linear-gradient(135deg, #1b5e20, #388e3c);
+        }
+
+        .tema-escuro .intro,
+        .tema-escuro .tab-content,
+        .tema-escuro .fenomeno-card,
+        .tema-escuro .categoria-card,
+        .tema-escuro .alfabeto-fonetico,
+        .tema-escuro .quiz-resultado {
+            background-color: #333;
+            color: #f5f5f5;
+        }
+
+        .tema-escuro .exemplos,
+        .tema-escuro .exercicio {
+            background-color: #424242;
+        }
+
+        .tema-escuro .explicacao {
+            background-color: #424242;
+        }
+
+        .tema-escuro .tab {
+            background-color: #424242;
+            color: #f5f5f5;
+        }
+
+        .tema-escuro .opcao,
+        .tema-escuro .quiz-opcao,
+        .tema-escuro .alfabeto-item {
+            background-color: #424242;
+            color: #f5f5f5;
+            border-color: #555;
+        }
+
+        .tema-escuro tr:nth-child(even) {
+            background-color: #424242;
+        }
+
+        .tema-escuro tr:nth-child(odd) {
+            background-color: #333;
+        }
+
+        .tema-escuro th {
+            background-color: #1b5e20;
+        }
+
+        .tema-escuro .alfabeto-exemplo {
+            color: #bbb;
+        }
+
+        .tema-escuro .search-input,
+        .tema-escuro .search-results,
+        .tema-escuro .search-result-item {
+            background-color: #424242;
+            color: #f5f5f5;
+            border-color: #555;
+        }
+
+        .tema-escuro .search-result-item:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="tema-toggle" title="Alternar tema claro/escuro">
+        <div class="tema-icon">☀️</div>
+    </div>
+
+    <header>
+        <h1>FonéticaPT</h1>
+        <p>Aprende os fenómenos fonéticos da língua portuguesa</p>
+    </header>
+
+    <div class="container">
+        <div class="intro">
+            <h2>Bem-vindo à FonéticaPT!</h2>
+            <p>Esta aplicação vai ajudar-te a compreender os fenómenos fonéticos da língua portuguesa (variante europeia). Vais descobrir como os sons mudam, se transformam e interagem na nossa língua.</p>
+            <p>Explora os diferentes módulos, realiza exercícios interativos e testa os teus conhecimentos para dominares este tema importante da gramática portuguesa.</p>
+            <div class="intro-buttons" style="display: flex; gap: 1rem; margin-top: 1rem;">
+                <button onclick="ativarAba('fenomenos')">Explorar Fenómenos</button>
+                <button onclick="ativarAba('exercicios')">Praticar com Exercícios</button>
+                <button onclick="ativarAba('quiz')">Testar Conhecimentos</button>
+            </div>
+        </div>
+
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Pesquisar fenómenos fonéticos...">
+            <div class="search-results"></div>
+        </div>
+
+        <div class="nav-tabs">
+            <div class="tab active" data-tab="introducao">Introdução</div>
+            <div class="tab" data-tab="fenomenos">Fenómenos Fonéticos</div>
+            <div class="tab" data-tab="exercicios">Exercícios</div>
+            <div class="tab" data-tab="quiz">Quiz</div>
+            <div class="tab" data-tab="alfabeto">Alfabeto Fonético</div>
+            <div class="tab" data-tab="glossario">Glossário</div>
+        </div>
+
+        <div id="introducao" class="tab-content active">
+            <h2>Introdução à Fonética e Fonologia</h2>
+            <p>A fonética e a fonologia são duas disciplinas que estudam os sons da língua, mas com enfoques diferentes:</p>
+            
+            <div class="explicacao">
+                <h3>Fonética</h3>
+                <p>A fonética estuda os sons da fala do ponto de vista físico e articulatório. Preocupa-se com a produção, transmissão e perceção dos sons da linguagem humana.</p>
+                <p>Analisa como os sons são produzidos pelo aparelho fonador, suas propriedades acústicas e como são percebidos pelo ouvido.</p>
+            </div>
+            
+            <div class="explicacao">
+                <h3>Fonologia</h3>
+                <p>A fonologia estuda o valor funcional dos sons numa língua, ou seja, como os sons se organizam e funcionam dentro de um sistema linguístico específico.</p>
+                <p>Analisa os fonemas (unidades sonoras que distinguem significados) e as regras que governam a sua distribuição e combinação.</p>
+            </div>
+
+            <h3>O que são fenómenos fonéticos?</h3>
+            <p>Os fenómenos fonéticos são alterações que ocorrem nos sons das palavras devido a diversos fatores, como a influência de sons vizinhos, a rapidez da fala, a evolução histórica da língua, entre outros.</p>
+            <p>Estes fenómenos são responsáveis por muitas das diferenças entre a escrita e a pronúncia, e também explicam muitas transformações que as palavras sofreram ao longo do tempo.</p>
+
+            <div style="margin: 2rem 0; background-color: #e8f5e9; padding: 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                <h3 style="color: var(--cor-primaria); margin-top: 0;">Mapa Mental dos Fenómenos Fonéticos</h3>
+                <img src="/api/placeholder/800/500" alt="Mapa Mental dos Fenómenos Fonéticos" style="width: 100%; border-radius: 8px; margin: 1rem 0;" />
+                <p style="text-align: center; font-style: italic;">Este mapa mental mostra a classificação dos principais fenómenos fonéticos da língua portuguesa.</p>
+            </div>
+
+            <h3>Categorias de fenómenos fonéticos</h3>
+            <div class="categoria-grid">
+                <div class="categoria-card" data-categoria="adicao">
+                    <div class="categoria-icon">➕</div>
+                    <h3>Adição</h3>
+                    <p>Acréscimo de sons à palavra</p>
+                </div>
+                <div class="categoria-card" data-categoria="supressao">
+                    <div class="categoria-icon">➖</div>
+                    <h3>Supressão</h3>
+                    <p>Eliminação de sons da palavra</p>
+                </div>
+                <div class="categoria-card" data-categoria="permuta">
+                    <div class="categoria-icon">🔄</div>
+                    <h3>Permuta</h3>
+                    <p>Troca de posição ou natureza dos sons</p>
+                </div>
+                <div class="categoria-card" data-categoria="transformacao">
+                    <div class="categoria-icon">🔀</div>
+                    <h3>Transformação</h3>
+                    <p>Alteração na natureza dos sons</p>
+                </div>
+            </div>
+
+            <h3>Importância do estudo dos fenómenos fonéticos</h3>
+            <ul>
+                <li>Compreender a evolução histórica da língua portuguesa</li>
+                <li>Entender a relação entre ortografia e pronúncia</li>
+                <li>Melhorar a pronúncia e a dicção</li>
+                <li>Facilitar a aprendizagem de outras línguas, especialmente as românicas</li>
+                <li>Desenvolver a consciência fonológica, importante para a leitura e escrita</li>
+            </ul>
+
+            <div class="explicacao">
+                <h3>Aparelho fonador humano</h3>
+                <p>O aparelho fonador humano é composto por vários órgãos que, embora tenham funções primárias relacionadas com a respiração e a alimentação, também são utilizados para produzir os sons da fala.</p>
+                <p>Os principais componentes são:</p>
+                <ul>
+                    <li><strong>Pulmões:</strong> fornecem o ar necessário para a produção dos sons</li>
+                    <li><strong>Laringe:</strong> contém as cordas vocais, responsáveis pela sonoridade</li>
+                    <li><strong>Cavidade bucal:</strong> inclui a língua, os dentes, o palato e os lábios</li>
+                    <li><strong>Cavidade nasal:</strong> responsável pela nasalização dos sons</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="fenomenos" class="tab-content">
+            <h2>Fenómenos Fonéticos</h2>
+            <p>Explora os diversos fenómenos fonéticos da língua portuguesa. Clica em cada fenómeno para ver a sua definição, exemplos e casos de uso.</p>
+
+            <h3>Fenómenos de Adição</h3>
+            
+            <div class="fenomeno-card">
+                <div class="fenomeno-titulo">
+                    <h3>Prótese <span class="badge">Adição</span></h3>
+                    <span>+</span>
+                </div>
+                <div class="fenomeno-conteudo">
+                    <p>Consiste na adição de um som no início da palavra.</p>
+                    <div class="exemplos">
+                        <p><strong>Exemplos:</strong></p>
+                        <p><span class="destaque">a</span>melga → do latim <em>manica</em></p>
+                        <p><span class="destaque">a</span>rraial → do latim <em>regalis</em></p>
+                        <p><span class="destaque">e</span>star → do latim <em>stare</em></p>
+                    </div>
+                    <p>Este fenómeno foi muito comum na evolução do latim para o português, sendo também frequente na linguagem infantil. Muitas palavras que começavam com <em>s</em> seguido de consoante no latim receberam um <em>e</em> inicial em português (spiritu → espírito).</p>
+                </div>
+            </div>
+
+            <div class="fenomeno-card">
+                <div class="fenomeno-titulo">
+                    <h3>Epêntese <span class="badge">Adição</span></h3>
+                    <span>+</span>
+                </div>
+                <div class="fenomeno-conteudo">
+                    <p>Consiste na adição de um som no meio da palavra.</p>
+                    <div class="exemplos">
+                        <p><strong>Exemplos:</strong></p>
+                        <p>area → ar<span class="destaque">e</span>ia</p>
+                        <p>coronica (arcaico) → cr<span class="destaque">o</span>nica → crónica</p>
+                        <p>stella → est<span class="destaque">r</span>ela</p>
+                    </div>
+                    <p>A epêntese pode ocorrer por razões de eufonia (tornar a pronúncia mais agradável) ou para facilitar a articulação de grupos consonânticos. Na linguagem popular, é comum a epêntese de <em>i</em> em palavras como "pneu" [pineu] e "psicologia" [pisicolojia].</p>
+                </div>
+            </div>
+
+            <div class="fenomeno-card">
+                <div class="fenomeno-titulo">
+                    <h3>Paragoge ou Epítese <span class="badge">Adição</span></h3>
+                    <span>+</span>
+                </div>
+                <div class="fenomeno-conteudo">
+                    <p>Consiste na adição de um som no final da palavra.</p>
+                    <div class="exemplos">
+                        <p><strong>Exemplos:</strong></p>
+                        <p>mar<span class="destaque">e</span> (arcaico) → mar</p>
+                        <p>ante<span class="destaque">s</span> (← ante)</p>
+                        <p>enquanto<span class="destaque">n</span> (coloquial) → enquanto</p>
+                    </div>
+                    <p>Na evolução do português, algumas palavras latinas que terminavam em consoante receberam uma vogal final. Na linguagem popular, é comum ouvir-se paragoge em palavras como "fazer" [fazere] ou o acréscimo de um "n" em palavras como "enquanto" [enkwɐntõ].</p>
+                </div>
+            </div>
+
+            <h3>Fenómenos de Supressão</h3>
+            
+            <div class="fenomeno-card">
+                <div class="fenomeno-titulo">
+                    <h3>Aférese <span class="badge">Supressão</span></h3>
+                    <span>+</span>
+                </div>
+                <div class="fenomeno-conteudo">
+                    <p>Consiste na supressão de um som no início da palavra.</p>
+                    <div class="exemplos">
+                        <p><strong>Exemplos:</strong></p>
+                        <p><span class="destaque">a</span>pothecariu → boticário</p>
+                        <p><span class="destaque">e</span>piscopus → bispo</p>
+                        <p><span class="destaque">es</span>tá → 'tá (linguagem coloquial)</p>
+                    </div>
+                    <p>É muito comum na linguagem coloquial e na evolução histórica da língua. Ocorre frequentemente com vogais átonas iniciais, como em "está" → "'tá" ou "espera" → "'pera".</p>
+                </div>
+            </div>
+
+            <div class="fenomeno-card">
+                <div class="fenomeno-titulo">
+                    <h3>Síncope <span class="badge">Supressão</span></h3>
+                    <span>+</span>
+                </div>
+                <div class="fenomeno-conteudo">
+                    <p>Consiste na supressão de um som no meio da palavra.</p>
+                    <div class="exemplos">
+                        <p><strong>Exemplos:</strong></p>
+                        <p>vi<span class="destaque">ri</span>de → verde</p>
+                        <p>ma<span class="destaque">tu</span>ru → maduro</p>
+                        <p>occu<span class="destaque">pa</span>re → ocupar</p>
+                    </div>
+                    <p>Foi um fenómeno muito frequente na evolução do latim para o português, especialmente na queda de vogais postónicas (aquelas que vêm depois da sílaba tónica) em palavras proparoxítonas, transformando-as em paroxítonas.</p>
+                </div>
+            </div>
+
+            <div class="fenomeno-card">
+                <div class="fenomeno-titulo">
+                    <h3>Apócope <span class="badge">Supressão</span></h3>
+                    <span>+</span>
+                </div>
+                <div class="fenomeno-conteudo">
+                    <p>Consiste na supressão de um som no final da palavra.</p>
+                    <div class="exemplos">
+                        <p><strong>Exemplos:</strong></p>
+                        <p>amare → ama<span class="destaque">r</span></p>
+                        <p>grande → gran<span class="destaque">de</span> (antes de substantivos: gran ideia)</p>
+                        <p>papel<span class="destaque">a</span>da → papelad' (linguagem coloquial)</p>
+                    </div>
+                    <p>É comum na linguagem coloquial e nos processos de contração. Muitas palavras em português perderam sons finais em relação ao latim, especialmente o -e átono final.</p>
+                </div>
+            </div>
+
+            <div class="fenomeno-card">
+                <div class="fenomeno-titulo">
+                    <h3>Crase <span class="badge">Supressão</span></h3>
+                    <span>+</span>
+                </div>
+                <div class="fenomeno-conteudo">
+                    <p>Fusão de duas vogais idênticas em uma só.</p>
+                    <div class="exemplos">
+                        <p><strong>Exemplos:</strong></p>
+                        <p><span class="destaque">a</span> + <span class="destaque">a</span>miga → à amiga</p>
+                        <p>m<span class="destaque">a</span> + <span class="destaque">a</span>miga → mamiga (coloquial)</p>
+                        <p>d<span class="destaque">e</span> + <span class="destaque">e</span>studo → destudo</p>
+                    </div>
+                    <p>Na ortografia, a crase é indicada pelo acento grave (à). Na fala, ocorre naturalmente quando duas vogais idênticas se encontram, em palavras diferentes ou na mesma palavra, e geralmente não é percebida como dois sons.</p>
+                </div>
+            </div>
+
+            <div class="fenomeno-card">
+                <div class="fenomeno-titulo">
+                    <h3>Elisão <span class="badge">Supressão</span></h3>
+                    <span>+</span>
+                </div>
+                <div class="fenomeno-conteudo">
+                    <p>Supressão de uma vogal átona final quando a palavra seguinte começa por vogal.</p>
+                    <div class="exemplos">
+                        <p><strong>Exemplos:</strong></p>
+                        <p>d<span class="destaque">e</span> + água → d'água</p>
+                        <p>qu<span class="destaque">e</span> + horas → qu'horas</p>
+                        <p>ond<span class="destaque">e</span> + está → ond'está</p>
+                    </div>
+                    <p>A elisão é muito comum na fala coloquial e contribui para o ritmo do português. Na escrita literária, especialmente em poesia, é indicada pelo apóstrofo (').</p>
+                </div>
+            </div>
+
+            <h3>Fenómenos de Permuta</h3>
+            
+            <div class="fenomeno-card">
+                <div class="fenomeno-titulo">
+                    <h3>Metátese <span class="badge">Permuta</span></h3>
+                    <span>+</span>
+                </div>
+                <div class="fenomeno-conteudo">
+                    <p>Troca de posição dos sons dentro da palavra.</p>
+                    <div class="exemplos">
+                        <p><strong>Exemplos:</strong></p>
+                        <p>sempe<span class="destaque">r</span> → semp<span class="destaque">r</span>e</p>
+                        <p>p<span class="destaque">re</span>guntar (arcaico) → p<span class="destaque">er</span>guntar</p>
+                        <p>p<span class="destaque">ro</span>beza (popular) → p<span class="destaque">or</span>breza (pobreza)</p>
+                    </div>
+                    <p>A metátese é comum na evolução histórica das línguas e em falares populares. Por vezes, ajuda a facilitar a pronúncia de grupos consonânticos difíceis.</p>
+                </div>
+            </div>
+
+            <div class="fenomeno-card">
+                <div class="fenomeno-titulo">
+                    <h3>Assimilação <span class="badge">Transformação</span></h3>
+                    <span>+</span>
+                </div>
+                <div class="fenomeno-conteudo">
+                    <p>Fenómeno em que um som se torna mais semelhante a outro que está próximo.</p>
+                    <div class="exemplos">
+                        <p><strong>Exemplos:</strong></p>
+                        <p>pessoa [pɨ<span class="destaque">s</span>oa] → [pɨ<span class="destaque">s</span>oa]</p>
+                        <p>desde [d<span class="destaque">ɛ</span>zdɨ] → [d<span class="destaque">ɛ</span>ʒdɨ]</p>
+                        <p>factu → fe<span class="destaque">i</span>to (em que o a se assimilou ao i do ditongo formado)</p>
+                    </div>
+                    <p>A assimilação pode ser: progressiva (um som influencia o seguinte) ou regressiva (um som é influenciado pelo seguinte, mais comum em português); parcial (apenas algumas características são assimiladas) ou total (um som torna-se idêntico ao outro).</p>
+                </div>
+            </div>
+
+            <div class="fenomeno-card">
+                <div class="fenomeno-titulo">
+                    <h3>Dissimilação <span class="badge">Transformação</span></h3>
+                    <span>+</span>
+                </div>
+                <div class="fenomeno-conteudo">
+                    <p>Fenómeno em que um som se torna diferente de outro som próximo que é semelhante.</p>
+                    <div class="exemplos">
+                        <p><strong>Exemplos:</strong></p>
+                        <p>li<span class="destaque">l</span>io (latim) → lí<span class="destaque">r</span>io</p>
+                        <p>a<span class="destaque">r</span>bo<span class="destaque">r</span> (latim) → á<span class="destaque">r</span>vo<span class="destaque">l</span>e</p>
+                        <p>p<span class="destaque">e</span>regrino → p<span class="destaque">i</span>regrino (português antigo)</p>
+                    </div>
+                    <p>A dissimilação evita a repetição de sons muito semelhantes, tornando a palavra mais fácil de pronunciar. Foi um fenómeno importante na evolução do latim para o português.</p>
+                </div>
+            </div>
+
+            <h3>Outros Fenómenos Importantes</h3>
+
+            <div class="fenomeno-card">
+                <div class="fenomeno-titulo">
+                    <h3>Nasalização <span class="badge">Transformação</span></h3>
+                    <span>+</span>
+                </div>
+                <div class="fenomeno-conteudo">
+                    <p>Transformação de uma vogal oral em vogal nasal.</p>
+                    <div class="exemplos">
+                        <p><strong>Exemplos:</strong></p>
+                        <p>l<span class="destaque">u</span>na → l<span class="destaque">ũ</span>a → lua</p>
+                        <p>m<span class="destaque">a</span>nu → m<span class="destaque">ã</span>o</p>
+                        <p>p<span class="destaque">a</span>ne → p<span class="destaque">ã</span>o</p>
+                    </div>
+                    <p>A nasalização é uma característica marcante do português. Ocorre geralmente quando uma vogal é seguida por consoante nasal (m, n, nh) na mesma sílaba ou quando a consoante nasal da sílaba seguinte exerce influência sobre a vogal anterior.</p>
+                </div>
+            </div>
+
+            <div class="fenomeno-card">
+                <div class="fenomeno-titulo">
+                    <h3>Vocalização <span class="badge">Transformação</span></h3>
+                    <span>+</span>
+                </div>
+                <div class="fenomeno-conteudo">
+                    <p>Transformação de uma consoante em vogal ou semivogal.</p>
+                    <div class="exemplos">
+                        <p><strong>Exemplos:</strong></p>
+                        <p>pa<span class="destaque">l</span>atiu → pa<span class="destaque">i</span>ço (paço)</p>
+                        <p>a<span class="destaque">lt</span>eru → a<span class="destaque">u</span>tro (outro)</p>
+                        <p>mu<span class="destaque">lt</span>u → mu<span class="destaque">i</span>to</p>
+                    </div>
+                    <p>A vocalização foi um fenómeno importante na formação de muitos ditongos em português. A consoante lateral [l] em final de sílaba vocalizou-se em [w] em muitas variedades do português.</p>
+                </div>
+            </div>
+
+            <div class="fenomeno-card">
+                <div class="fenomeno-titulo">
+                    <h3>Ditongação <span class="badge">Transformação</span></h3>
+                    <span>+</span>
+                </div>
+                <div class="fenomeno-conteudo">
+                    <p>Transformação de uma vogal ou duas vogais em um ditongo.</p>
+                    <div class="exemplos">
+                        <p><strong>Exemplos:</strong></p>
+                        <p>p<span class="destaque">a</span>ne → p<span class="destaque">ãi</span> → pão</p>
+                        <p>fr<span class="destaque">e</span>xi → fr<span class="destaque">ei</span>xe → freixo</p>
+                        <p>paz [pa<span class="destaque">ʃ</span>] → [pa<span class="destaque">jʃ</span>] (em algumas variedades do português)</p>
+                    </div>
+                    <p>A ditongação pode ocorrer por vários motivos: vocalização de consoantes, encontro de vogais que se transformam em ditongo, ou tendência de pronúncia de algumas variedades do português (no Brasil, por exemplo, é comum a ditongação antes de sibilantes em final de palavra).</p>
+                </div>
+            </div>
+
+            <div class="fenomeno-card">
+                <div class="fenomeno-titulo">
+                    <h3>Monotongação <span class="badge">Transformação</span></h3>
+                    <span>+</span>
+                </div>
+                <div class="fenomeno-conteudo">
+                    <p>Transformação de um ditongo em uma vogal simples.</p>
+                    <div class="exemplos">
+                        <p><strong>Exemplos:</strong></p>
+                        <p>c<span class="destaque">ai</span>xa → c<span class="destaque">a</span>xa (na pronúncia)</p>
+                        <p>pr<span class="destaque">ei</span>ro → pr<span class="destaque">e</span>ro (primeiro, na linguagem coloquial)</p>
+                        <p><span class="destaque">ou</span>ro → <span class="destaque">ô</span>ro (na pronúncia)</p>
+                    </div>
+                    <p>A monotongação é comum na fala coloquial, especialmente com os ditongos "ei", "ai" e "ou". Em alguns casos, foi incorporada à norma culta, como em "cadeira" (do latim "cathedra").</p>
+                </div>
+            </div>
+
+            <div class="fenomeno-card">
+                <div class="fenomeno-titulo">
+                    <h3>Metafonia <span class="badge">Transformação</span></h3>
+                    <span>+</span>
+                </div>
+                <div class="fenomeno-conteudo">
+                    <p>Alteração de uma vogal tónica por influência de uma vogal átona (geralmente final).</p>
+                    <div class="exemplos">
+                        <p><strong>Exemplos:</strong></p>
+                        <p>n<span class="destaque">o</span>vo (o aberto) / n<span class="destaque">o</span>va (o aberto)</p>
+                        <p>p<span class="destaque">o</span>rco (o fechado) / p<span class="destaque">o</span>rca (o aberto)</p>
+                        <p>f<span class="destaque">o</span>rno (o fechado) / f<span class="destaque">o</span>rna (o aberto)</p>
+                    </div>
+                    <p>A metafonia explica diferenças de timbre em vogais tónicas de palavras relacionadas, como é o caso de muitos substantivos e adjetivos no masculino e feminino. É um fenómeno importante para entender a flexão nominal em português.</p>
+                </div>
+            </div>
+
+            <div class="fenomeno-card">
+                <div class="fenomeno-titulo">
+                    <h3>Sonorização <span class="badge">Transformação</span></h3>
+                    <span>+</span>
+                </div>
+                <div class="fenomeno-conteudo">
+                    <p>Transformação de uma consoante surda em consoante sonora.</p>
+                    <div class="exemplos">
+                        <p><strong>Exemplos:</strong></p>
+                        <p>vi<span class="destaque">t</span>a → vi<span class="destaque">d</span>a</p>
+                        <p>lu<span class="destaque">p</span>u → lo<span class="destaque">b</span>o</p>
+                        <p>a<span class="destaque">c</span>utu → a<span class="destaque">g</span>udo</p>
+                    </div>
+                    <p>A sonorização foi um fenómeno muito comum na evolução do latim para o português, especialmente em consoantes intervocálicas (entre vogais). É caracterizada pela vibração das cordas vocais na produção do som.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="exercicios" class="tab-content">
+            <h2>Exercícios Interativos</h2>
+            <p>Pratica o teu conhecimento sobre os fenómenos fonéticos com estes exercícios interativos. Seleciona a resposta correta para cada pergunta.</p>
+
+            <div class="filtro-exercicios" style="margin: 1.5rem 0; display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                <button class="filtro-btn active" data-filtro="todos">Todos</button>
+                <button class="filtro-btn" data-filtro="adicao">Adição</button>
+                <button class="filtro-btn" data-filtro="supressao">Supressão</button>
+                <button class="filtro-btn" data-filtro="permuta">Permuta</button>
+                <button class="filtro-btn" data-filtro="transformacao">Transformação</button>
+            </div>
+
+            <div class="exercicio" id="exercicio1" data-categoria="transformacao">
+                <h3>Exercício 1: Identifica o fenómeno</h3>
+                <p>Na evolução da palavra latina "planu" para o português "chão", ocorreu qual fenómeno fonético?</p>
+                <div class="opcoes">
+                    <div class="opcao" data-valor="A">A) Sonorização</div>
+                    <div class="opcao" data-valor="B">B) Metátese</div>
+                    <div class="opcao" data-valor="C">C) Palatalização</div>
+                    <div class="opcao" data-valor="D">D) Vocalização</div>
+                </div>
+                <div class="feedback" id="feedback1"></div>
+                <button id="verificar1">Verificar resposta</button>
+            </div>
+
+            <div class="exercicio" id="exercicio2" data-categoria="supressao">
+                <h3>Exercício 2: Identifica o exemplo</h3>
+                <p>Qual das seguintes palavras exemplifica o fenómeno da aférese?</p>
+                <div class="opcoes">
+                    <div class="opcao" data-valor="A">A) Espírito (do latim "spiritus")</div>
+                    <div class="opcao" data-valor="B">B) Lirio (do latim "lilium")</div>
+                    <div class="opcao" data-valor="C">C) Bispo (do latim "episcopus")</div>
+                    <div class="opcao" data-valor="D">D) Outro (do latim "alteru")</div>
+                </div>
+                <div class="feedback" id="feedback2"></div>
+                <button id="verificar2">Verificar resposta</button>
+            </div>
+
+            <div class="exercicio" id="exercicio3" data-categoria="transformacao">
+                <h3>Exercício 3: Completa a explicação</h3>
+                <p>O fenómeno fonético em que uma vogal oral se transforma em vogal nasal chama-se:</p>
+                <div class="opcoes">
+                    <div class="opcao" data-valor="A">A) Vocalização</div>
+                    <div class="opcao" data-valor="B">B) Assimilação</div>
+                    <div class="opcao" data-valor="C">C) Nasalização</div>
+                    <div class="opcao" data-valor="D">D) Metafonia</div>
+                </div>
+                <div class="feedback" id="feedback3"></div>
+                <button id="verificar3">Verificar resposta</button>
+            </div>
+
+            <div class="exercicio" id="exercicio4" data-categoria="transformacao">
+                <h3>Exercício 4: Identifica o fenómeno</h3>
+                <p>Na evolução da palavra latina "nocte" para o português "noite", ocorreu qual fenómeno fonético?</p>
+                <div class="opcoes">
+                    <div class="opcao" data-valor="A">A) Metátese</div>
+                    <div class="opcao" data-valor="B">B) Vocalização</div>
+                    <div class="opcao" data-valor="C">C) Síncope</div>
+                    <div class="opcao" data-valor="D">D) Prótese</div>
+                </div>
+                <div class="feedback" id="feedback4"></div>
+                <button id="verificar4">Verificar resposta</button>
+            </div>
+
+            <div class="exercicio" id="exercicio5" data-categoria="transformacao">
+                <h3>Exercício 5: Identifica o par</h3>
+                <p>Em qual par de palavras ocorre o fenómeno da metafonia?</p>
+                <div class="opcoes">
+                    <div class="opcao" data-valor="A">A) novo / nova</div>
+                    <div class="opcao" data-valor="B">B) casa / casas</div>
+                    <div class="opcao" data-valor="C">C) peixe / peixes</div>
+                    <div class="opcao" data-valor="D">D) mar / mares</div>
+                </div>
+                <div class="feedback" id="feedback5"></div>
+                <button id="verificar5">Verificar resposta</button>
+            </div>
+            
+            <div class="exercicio" id="exercicio6" data-categoria="adicao">
+                <h3>Exercício 6: Identifica o exemplo</h3>
+                <p>Qual das seguintes palavras exemplifica o fenómeno da epêntese?</p>
+                <div class="opcoes">
+                    <div class="opcao" data-valor="A">A) Advogado (do latim "advocatus")</div>
+                    <div class="opcao" data-valor="B">B) Areia (do latim "arena")</div>
+                    <div class="opcao" data-valor="C">C) Estudar (do latim "studiare")</div>
+                    <div class="opcao" data-valor="D">D) Peixe (do latim "pisce")</div>
+                </div>
+                <div class="feedback" id="feedback6"></div>
+                <button id="verificar6">Verificar resposta</button>
+            </div>
+            
+            <div class="exercicio" id="exercicio7" data-categoria="permuta">
+                <h3>Exercício 7: Identifica o fenómeno</h3>
+                <p>Na evolução da palavra "perguntar" a partir do arcaico "preguntar", ocorreu qual fenómeno fonético?</p>
+                <div class="opcoes">
+                    <div class="opcao" data-valor="A">A) Metátese</div>
+                    <div class="opcao" data-valor="B">B) Epêntese</div>
+                    <div class="opcao" data-valor="C">C) Assimilação</div>
+                    <div class="opcao" data-valor="D">D) Dissimilação</div>
+                </div>
+                <div class="feedback" id="feedback7"></div>
+                <button id="verificar7">Verificar resposta</button>
+            </div>
+
+            <div class="progresso">
+                <div class="progresso-barra" id="progresso-exercicios"></div>
+            </div>
+            <div id="resultado-exercicios" style="text-align: center; margin-top: 1rem; font-weight: bold;"></div>
+            
+            <div class="exercicio-navegacao" style="display: flex; justify-content: space-between; margin-top: 2rem;">
+                <button id="exercicio-anterior" style="background-color: #757575;">Anterior</button>
+                <div id="paginacao-exercicios" style="display: flex; align-items: center; gap: 0.5rem;"></div>
+                <button id="exercicio-seguinte">Seguinte</button>
+            </div>
+        </div>
+
+        <div id="quiz" class="tab-content">
+            <h2>Quiz: Testa os teus conhecimentos</h2>
+            <p>Responde às perguntas abaixo para testar o teu conhecimento sobre os fenómenos fonéticos da língua portuguesa.</p>
+
+            <div class="quiz-progresso">
+                <span id="pergunta-atual">Pergunta 1 de 10</span>
+                <span id="pontuacao-atual">Pontuação: 0/0</span>
+            </div>
+
+            <div class="quiz-container" id="quiz-container">
+                <!-- As perguntas serão geradas dinamicamente via JavaScript -->
+            </div>
+
+            <div class="quiz-resultado" id="quiz-resultado">
+                <h3>Resultado final</h3>
+                <div class="quiz-pontuacao" id="quiz-pontuacao-final">Pontuação: 0/10</div>
+                <div id="quiz-feedback"></div>
+                <button id="reiniciar-quiz">Reiniciar Quiz</button>
+            </div>
+        </div>
+
+        <div id="alfabeto" class="tab-content">
+            <h2>Alfabeto Fonético</h2>
+            <p>O Alfabeto Fonético Internacional (AFI) é um sistema de notação fonética criado pela Associação Fonética Internacional. Aqui estão os principais símbolos utilizados para representar os sons da língua portuguesa (variante europeia).</p>
+
+            <div class="alfabeto-fonetico">
+                <h3>Vogais</h3>
+                <div class="alfabeto-grid">
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[a]</div>
+                        <div class="alfabeto-exemplo">pato</div>
+                    </div>
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[ɐ]</div>
+                        <div class="alfabeto-exemplo">cada</div>
+                    </div>
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[ɛ]</div>
+                        <div class="alfabeto-exemplo">pé</div>
+                    </div>
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[e]</div>
+                        <div class="alfabeto-exemplo">medo</div>
+                    </div>
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[ɨ]</div>
+                        <div class="alfabeto-exemplo">de</div>
+                    </div>
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[i]</div>
+                        <div class="alfabeto-exemplo">vivo</div>
+                    </div>
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[ɔ]</div>
+                        <div class="alfabeto-exemplo">pó</div>
+                    </div>
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[o]</div>
+                        <div class="alfabeto-exemplo">avô</div>
+                    </div>
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[u]</div>
+                        <div class="alfabeto-exemplo">uva</div>
+                    </div>
+                </div>
+
+                <h3>Vogais Nasais</h3>
+                <div class="alfabeto-grid">
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[ɐ̃]</div>
+                        <div class="alfabeto-exemplo">sã</div>
+                    </div>
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[ẽ]</div>
+                        <div class="alfabeto-exemplo">tempo</div>
+                    </div>
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[ĩ]</div>
+                        <div class="alfabeto-exemplo">fim</div>
+                    </div>
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[õ]</div>
+                        <div class="alfabeto-exemplo">som</div>
+                    </div>
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[ũ]</div>
+                        <div class="alfabeto-exemplo">um</div>
+                    </div>
+                </div>
+
+                <h3>Semivogais</h3>
+                <div class="alfabeto-grid">
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[j]</div>
+                        <div class="alfabeto-exemplo">pai</div>
+                    </div>
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[w]</div>
+                        <div class="alfabeto-exemplo">mau</div>
+                    </div>
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[j̃]</div>
+                        <div class="alfabeto-exemplo">mãe</div>
+                    </div>
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[w̃]</div>
+                        <div class="alfabeto-exemplo">não</div>
+                    </div>
+                </div>
+
+                <h3>Consoantes</h3>
+                <div class="alfabeto-grid">
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[p]</div>
+                        <div class="alfabeto-exemplo">pato</div>
+                    </div>
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[b]</div>
+                        <div class="alfabeto-exemplo">bola</div>
+                    </div>
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[t]</div>
+                        <div class="alfabeto-exemplo">tela</div>
+                    </div>
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[d]</div>
+                        <div class="alfabeto-exemplo">dado</div>
+                    </div>
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[k]</div>
+                        <div class="alfabeto-exemplo">casa</div>
+                    </div>
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[g]</div>
+                        <div class="alfabeto-exemplo">gato</div>
+                    </div>
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[f]</div>
+                        <div class="alfabeto-exemplo">faca</div>
+                    </div>
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[v]</div>
+                        <div class="alfabeto-exemplo">vaca</div>
+                    </div>
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[s]</div>
+                        <div class="alfabeto-exemplo">sapo</div>
+                    </div>
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[z]</div>
+                        <div class="alfabeto-exemplo">casa</div>
+                    </div>
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[ʃ]</div>
+                        <div class="alfabeto-exemplo">chave</div>
+                    </div>
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[ʒ]</div>
+                        <div class="alfabeto-exemplo">já</div>
+                    </div>
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[m]</div>
+                        <div class="alfabeto-exemplo">mão</div>
+                    </div>
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[n]</div>
+                        <div class="alfabeto-exemplo">nada</div>
+                    </div>
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[ɲ]</div>
+                        <div class="alfabeto-exemplo">senha</div>
+                    </div>
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[l]</div>
+                        <div class="alfabeto-exemplo">lado</div>
+                    </div>
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[ʎ]</div>
+                        <div class="alfabeto-exemplo">filho</div>
+                    </div>
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[ɾ]</div>
+                        <div class="alfabeto-exemplo">caro</div>
+                    </div>
+                    <div class="alfabeto-item">
+                        <div class="alfabeto-simbolo">[ʀ]</div>
+                        <div class="alfabeto-exemplo">carro</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="explicacao">
+                <h3>Particularidades do Português Europeu</h3>
+                <p>A variante europeia do português tem algumas características fonéticas particulares:</p>
+                <ul>
+                    <li>Redução vocálica: as vogais átonas tendem a ser reduzidas, como o "e" átono que geralmente se pronuncia [ɨ]</li>
+                    <li>O "o" átono tende a pronunciar-se como [u]</li>
+                    <li>O "r" em final de palavra ou sílaba tende a ser apagado ou muito suavizado</li>
+                    <li>O "s" em final de palavra ou antes de consoante surda pronuncia-se como [ʃ]</li>
+                    <li>O "s" antes de consoante sonora pronuncia-se como [ʒ]</li>
+                </ul>
+            </div>
+
+            <div class="exercicio">
+                <h3>Pratica a transcrição fonética</h3>
+                <p>Tenta fazer a transcrição fonética destas palavras do português europeu:</p>
+                <ul>
+                    <li>mesa</li>
+                    <li>felicidade</li>
+                    <li>professor</li>
+                    <li>estudante</li>
+                    <li>chapéu</li>
+                </ul>
+                <button id="mostrar-transcricao">Ver transcrições</button>
+                <div id="transcricoes" style="display: none;">
+                    <p>mesa: [ˈmezɐ]</p>
+                    <p>felicidade: [fɨlisiˈdadɨ]</p>
+                    <p>professor: [prufɨˈsor]</p>
+                    <p>estudante: [ɨʃtuˈdɐ̃tɨ]</p>
+                    <p>chapéu: [ʃɐˈpɛw]</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="glossario" class="tab-content">
+            <h2>Glossário de Termos Fonéticos</h2>
+            <p>Este glossário contém a definição dos principais termos relacionados com a fonética e os fenómenos fonéticos da língua portuguesa.</p>
+
+            <div class="glossario-letra">A</div>
+            <div class="glossario-item">
+                <span class="glossario-termo">Aférese:</span> Supressão de um som no início da palavra.
+            </div>
+            <div class="glossario-item">
+                <span class="glossario-termo">Alofone:</span> Variante contextual de um fonema, que não altera o significado das palavras.
+            </div>
+            <div class="glossario-item">
+                <span class="glossario-termo">Apócope:</span> Supressão de um som no final da palavra.
+            </div>
+            <div class="glossario-item">
+                <span class="glossario-termo">Assimilação:</span> Fenómeno em que um som se torna mais semelhante a outro que está próximo.
+            </div>
+
+            <div class="glossario-letra">C</div>
+            <div class="glossario-item">
+                <span class="glossario-termo">Consoante:</span> Som produzido com algum tipo de obstrução à passagem do ar pelo aparelho fonador.
+            </div>
+            <div class="glossario-item">
+                <span class="glossario-termo">Crase:</span> Fusão de duas vogais idênticas em uma só.
+            </div>
+
+            <div class="glossario-letra">D</div>
+            <div class="glossario-item">
+                <span class="glossario-termo">Ditongo:</span> Encontro de uma vogal e uma semivogal, ou vice-versa, na mesma sílaba.
+            </div>
+            <div class="glossario-item">
+                <span class="glossario-termo">Ditongação:</span> Transformação de uma vogal ou duas vogais em um ditongo.
+            </div>
+            <div class="glossario-item">
+                <span class="glossario-termo">Dissimilação:</span> Fenómeno em que um som se torna diferente de outro som próximo que é semelhante.
+            </div>
+
+            <div class="glossario-letra">E</div>
+            <div class="glossario-item">
+                <span class="glossario-termo">Elisão:</span> Supressão de uma vogal átona final quando a palavra seguinte começa por vogal.
+            </div>
+            <div class="glossario-item">
+                <span class="glossario-termo">Epêntese:</span> Adição de um som no meio da palavra.
+            </div>
+            <div class="glossario-item">
+                <span class="glossario-termo">Epítese:</span> Ver Paragoge.
+            </div>
+
+            <div class="glossario-letra">F</div>
+            <div class="glossario-item">
+                <span class="glossario-termo">Fonema:</span> Unidade sonora mínima capaz de estabelecer diferença de significado entre palavras.
+            </div>
+            <div class="glossario-item">
+                <span class="glossario-termo">Fonética:</span> Estudo dos sons da fala do ponto de vista físico e articulatório.
+            </div>
+            <div class="glossario-item">
+                <span class="glossario-termo">Fonologia:</span> Estudo do valor funcional dos sons numa língua.
+            </div>
+
+            <div class="glossario-letra">H</div>
+            <div class="glossario-item">
+                <span class="glossario-termo">Hiato:</span> Encontro de duas vogais em sílabas diferentes.
+            </div>
+
+            <div class="glossario-letra">M</div>
+            <div class="glossario-item">
+                <span class="glossario-termo">Metafonia:</span> Alteração de uma vogal tónica por influência de uma vogal átona.
+            </div>
+            <div class="glossario-item">
+                <span class="glossario-termo">Metátese:</span> Troca de posição dos sons dentro da palavra.
+            </div>
+            <div class="glossario-item">
+                <span class="glossario-termo">Monotongação:</span> Transformação de um ditongo em uma vogal simples.
+            </div>
+
+            <div class="glossario-letra">N</div>
+            <div class="glossario-item">
+                <span class="glossario-termo">Nasalização:</span> Transformação de uma vogal oral em vogal nasal.
+            </div>
+
+            <div class="glossario-letra">P</div>
+            <div class="glossario-item">
+                <span class="glossario-termo">Palatalização:</span> Transformação de um som em som palatal.
+            </div>
+            <div class="glossario-item">
+                <span class="glossario-termo">Paragoge:</span> Adição de um som no final da palavra.
+            </div>
+            <div class="glossario-item">
+                <span class="glossario-termo">Prótese:</span> Adição de um som no início da palavra.
+            </div>
+
+            <div class="glossario-letra">S</div>
+            <div class="glossario-item">
+                <span class="glossario-termo">Semivogal:</span> Som intermédio entre vogal e consoante, que forma ditongo com uma vogal.
+            </div>
+            <div class="glossario-item">
+                <span class="glossario-termo">Síncope:</span> Supressão de um som no meio da palavra.
+            </div>
+            <div class="glossario-item">
+                <span class="glossario-termo">Sonorização:</span> Transformação de uma consoante surda em consoante sonora.
+            </div>
+
+            <div class="glossario-letra">T</div>
+            <div class="glossario-item">
+                <span class="glossario-termo">Tritongo:</span> Encontro de uma semivogal, uma vogal e outra semivogal, na mesma sílaba.
+            </div>
+
+            <div class="glossario-letra">V</div>
+            <div class="glossario-item">
+                <span class="glossario-termo">Vocalização:</span> Transformação de uma consoante em vogal ou semivogal.
+            </div>
+            <div class="glossario-item">
+                <span class="glossario-termo">Vogal:</span> Som produzido sem obstrução à passagem do ar pelo aparelho fonador.
+            </div>
+        </div>
+    </div>
+
+    <div class="back-to-top">↑</div>
+
+    <script>
+        // Função para alternar entre as abas
+        function ativarAba(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.getElementById(tabId).classList.add('active');
+            document.querySelector(`.tab[data-tab="${tabId}"]`).classList.add('active');
+        }
+
+        // Evento de clique nas abas
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabId = this.getAttribute('data-tab');
+                ativarAba(tabId);
+            });
+        });
+
+        // Expandir/colapsar card de fenómeno
+        document.querySelectorAll('.fenomeno-titulo').forEach(titulo => {
+            titulo.addEventListener('click', function() {
+                const conteudo = this.nextElementSibling;
+                conteudo.classList.toggle('aberto');
+                const icone = this.querySelector('span');
+                icone.textContent = conteudo.classList.contains('aberto') ? '-' : '+';
+            });
+        });
+
+        // Categoria cards no tab introdução
+        document.querySelectorAll('.categoria-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const categoria = this.getAttribute('data-categoria');
+                ativarAba('fenomenos');
+                // Poderia adicionar scroll para a categoria específica
+            });
+        });
+
+        // Sistema de exercícios
+        const respostasCorretas = {
+            'exercicio1': 'C',
+            'exercicio2': 'C',
+            'exercicio3': 'C',
+            'exercicio4': 'B',
+            'exercicio5': 'A'
+        };
+
+        const totalExercicios = Object.keys(respostasCorretas).length;
+        let exerciciosCorretos = 0;
+
+        document.querySelectorAll('.opcao').forEach(opcao => {
+            opcao.addEventListener('click', function() {
+                const exercicioId = this.closest('.exercicio').id;
+                const opcoesContainer = this.closest('.opcoes');
+                
+                // Remove a seleção anterior
+                opcoesContainer.querySelectorAll('.opcao').forEach(op => {
+                    op.classList.remove('selecionada');
+                });
+                
+                // Adiciona a nova seleção
+                this.classList.add('selecionada');
+            });
+        });
+
+        document.querySelectorAll('[id^="verificar"]').forEach(botao => {
+            botao.addEventListener('click', function() {
+                const exercicioNum = this.id.replace('verificar', '');
+                const exercicioId = 'exercicio' + exercicioNum;
+                const opcaoSelecionada = document.querySelector(`#${exercicioId} .opcao.selecionada`);
+                
+                if (!opcaoSelecionada) {
+                    document.getElementById(`feedback${exercicioNum}`).innerHTML = 'Por favor, seleciona uma opção.';
+                    document.getElementById(`feedback${exercicioNum}`).className = 'feedback erro';
+                    return;
+                }
+                
+                const resposta = opcaoSelecionada.getAttribute('data-valor');
+                const respostaCorreta = respostasCorretas[exercicioId];
+                
+                document.querySelectorAll(`#${exercicioId} .opcao`).forEach(op => {
+                    op.classList.remove('correta', 'incorreta');
+                    if (op.getAttribute('data-valor') === respostaCorreta) {
+                        op.classList.add('correta');
+                    } else if (op === opcaoSelecionada) {
+                        op.classList.add('incorreta');
+                    }
+                });
+                
+                const feedback = document.getElementById(`feedback${exercicioNum}`);
+                
+                if (resposta === respostaCorreta) {
+                    feedback.innerHTML = 'Correto! Muito bem!';
+                    feedback.className = 'feedback sucesso';
+                    exerciciosCorretos++;
+                } else {
+                    feedback.innerHTML = `Incorreto. A resposta correta é a opção ${respostaCorreta}.`;
+                    feedback.className = 'feedback erro';
+                }
+                
+                // Atualiza a barra de progresso
+                const percentagemConcluida = (exerciciosCorretos / totalExercicios) * 100;
+                document.getElementById('progresso-exercicios').style.width = percentagemConcluida + '%';
+                document.getElementById('resultado-exercicios').innerText = `Pontuação: ${exerciciosCorretos}/${totalExercicios}`;
+                
+                // Desativa o botão depois de verificar
+                this.disabled = true;
+            });
+        });
+
+        // Sistema de Quiz
+        const perguntas = [
+            {
+                pergunta: "Qual é o fenómeno fonético que ocorre na palavra \"lobisomem\" derivada de \"lobo\" + \"homem\"?",
+                opcoes: ["Ditongação", "Síncope", "Crase", "Elisão"],
+                resposta: 3
+            },
+            {
+                pergunta: "Na evolução da palavra latina \"manum\" para o português \"mão\", qual fenómeno fonético ocorreu?",
+                opcoes: ["Nasalização e vocalização", "Síncope e apócope", "Metátese", "Prótese"],
+                resposta: 0
+            },
+            {
+                pergunta: "Qual fenómeno fonético está presente na evolução da palavra \"flamma\" para \"chama\"?",
+                opcoes: ["Assimilação", "Metátese", "Palatalização", "Vocalização"],
+                resposta: 2
+            },
+            {
+                pergunta: "O que é aférese?",
+                opcoes: ["Adição de som no início da palavra", "Supressão de som no início da palavra", "Adição de som no meio da palavra", "Troca de posição de sons"],
+                resposta: 1
+            },
+            {
+                pergunta: "Em \"de + água = d'água\", qual é o fenómeno fonético presente?",
+                opcoes: ["Crase", "Elisão", "Apócope", "Vocalização"],
+                resposta: 1
+            },
+            {
+                pergunta: "Qual é o fenómeno que acontece quando pronunciamos \"pexe\" em vez de \"peixe\"?",
+                opcoes: ["Monotongação", "Ditongação", "Metátese", "Síncope"],
+                resposta: 0
+            },
+            {
+                pergunta: "O fenómeno de sonorização consiste em:",
+                opcoes: ["Transformar uma vogal em consoante", "Transformar uma consoante surda em sonora", "Tornar um som mais nasal", "Eliminar sons no meio da palavra"],
+                resposta: 1
+            },
+            {
+                pergunta: "Na evolução da palavra \"octo\" para \"oito\", que fenómeno fonético ocorreu?",
+                opcoes: ["Metátese", "Vocalização", "Aférese", "Síncope"],
+                resposta: 1
+            },
+            {
+                pergunta: "Qual é o nome do processo em que duas vogais de sílabas diferentes se juntam numa só sílaba?",
+                opcoes: ["Crase", "Sinérese", "Ditongação", "Elisão"],
+                resposta: 1
+            },
+            {
+                pergunta: "No português europeu, o \"e\" átono é frequentemente pronunciado como:",
+                opcoes: ["[e]", "[ɛ]", "[ɨ]", "[ə]"],
+                resposta: 2
+            }
+        ];
+
+        let perguntaAtual = 0;
+        let pontuacao = 0;
+
+        function mostrarPergunta() {
+            const quizContainer = document.getElementById('quiz-container');
+            const pergunta = perguntas[perguntaAtual];
+            
+            let html = `
+                <div class="quiz-pergunta">${pergunta.pergunta}</div>
+                <div class="quiz-opcoes">
+            `;
+            
+            pergunta.opcoes.forEach((opcao, index) => {
+                html += `<div class="quiz-opcao" data-index="${index}">${opcao}</div>`;
+            });
+            
+            html += `</div><button id="proxima-pergunta" style="display:none;">Próxima pergunta</button>`;
+            
+            quizContainer.innerHTML = html;
+            
+            document.getElementById('pergunta-atual').textContent = `Pergunta ${perguntaAtual + 1} de ${perguntas.length}`;
+            document.getElementById('pontuacao-atual').textContent = `Pontuação: ${pontuacao}/${perguntaAtual}`;
+            
+            // Evento de clique nas opções
+            document.querySelectorAll('.quiz-opcao').forEach(opcao => {
+                opcao.addEventListener('click', function() {
+                    const indice = parseInt(this.getAttribute('data-index'));
+                    verificarResposta(indice);
+                });
+            });
+        }
+
+        function verificarResposta(indice) {
+            const pergunta = perguntas[perguntaAtual];
+            const todasOpcoes = document.querySelectorAll('.quiz-opcao');
+            
+            todasOpcoes.forEach(opcao => {
+                opcao.classList.remove('selecionada');
+                opcao.style.pointerEvents = 'none';
+            });
+            
+            const opcaoSelecionada = todasOpcoes[indice];
+            opcaoSelecionada.classList.add('selecionada');
+            
+            if (indice === pergunta.resposta) {
+                opcaoSelecionada.classList.add('correta');
+                pontuacao++;
+            } else {
+                opcaoSelecionada.classList.add('incorreta');
+                todasOpcoes[pergunta.resposta].classList.add('correta');
+            }
+            
+            document.getElementById('pontuacao-atual').textContent = `Pontuação: ${pontuacao}/${perguntaAtual + 1}`;
+            
+            const proximaBtn = document.getElementById('proxima-pergunta');
+            proximaBtn.style.display = 'block';
+            proximaBtn.addEventListener('click', proximaPergunta);
+        }
+
+        function proximaPergunta() {
+            perguntaAtual++;
+            
+            if (perguntaAtual < perguntas.length) {
+                mostrarPergunta();
+            } else {
+                mostrarResultado();
+            }
+        }
+
+        function mostrarResultado() {
+            document.getElementById('quiz-container').style.display = 'none';
+            document.getElementById('quiz-resultado').style.display = 'block';
+            document.getElementById('quiz-pontuacao-final').textContent = `Pontuação: ${pontuacao}/${perguntas.length}`;
+            
+            const percentagem = (pontuacao / perguntas.length) * 100;
+            let feedback = '';
+            
+            if (percentagem >= 90) {
+                feedback = 'Excelente! És um especialista em fenómenos fonéticos!';
+            } else if (percentagem >= 70) {
+                feedback = 'Muito bom! Tens um bom conhecimento sobre fenómenos fonéticos.';
+            } else if (percentagem >= 50) {
+                feedback = 'Não está mal! Mas podes melhorar o teu conhecimento sobre fenómenos fonéticos.';
+            } else {
+                feedback = 'Precisas de estudar mais sobre fenómenos fonéticos. Revê o material e tenta novamente!';
+            }
+            
+            document.getElementById('quiz-feedback').textContent = feedback;
+            
+            document.getElementById('reiniciar-quiz').addEventListener('click', function() {
+                perguntaAtual = 0;
+                pontuacao = 0;
+                document.getElementById('quiz-container').style.display = 'block';
+                document.getElementById('quiz-resultado').style.display = 'none';
+                mostrarPergunta();
+            });
+        }
+
+        // Iniciar o quiz quando a página carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            // Iniciar com a primeira pergunta do quiz
+            mostrarPergunta();
+            
+            // Alfabeto fonético - mostrar transcrições
+            document.getElementById('mostrar-transcricao').addEventListener('click', function() {
+                const transcricoes = document.getElementById('transcricoes');
+                if (transcricoes.style.display === 'none') {
+                    transcricoes.style.display = 'block';
+                    this.textContent = 'Ocultar transcrições';
+                } else {
+                    transcricoes.style.display = 'none';
+                    this.textContent = 'Ver transcrições';
+                }
+            });
+            
+            // Botão para voltar ao topo
+            const backToTop = document.querySelector('.back-to-top');
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTop.classList.add('visible');
+                } else {
+                    backToTop.classList.remove('visible');
+                }
+            });
+            
+            backToTop.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Alternância de tema claro/escuro
+            const temaToggle = document.querySelector('.tema-toggle');
+            const temaIcon = document.querySelector('.tema-icon');
+            
+            temaToggle.addEventListener('click', function() {
+                document.body.classList.toggle('tema-escuro');
+                temaIcon.textContent = document.body.classList.contains('tema-escuro') ? '🌙' : '☀️';
+                
+                // Salvar preferência no localStorage
+                if (document.body.classList.contains('tema-escuro')) {
+                    localStorage.setItem('tema', 'escuro');
+                } else {
+                    localStorage.setItem('tema', 'claro');
+                }
+            });
+            
+            // Verificar preferência salva
+            const temaSalvo = localStorage.getItem('tema');
+            if (temaSalvo === 'escuro') {
+                document.body.classList.add('tema-escuro');
+                temaIcon.textContent = '🌙';
+            }
+            
+            // Pesquisa
+            const searchInput = document.querySelector('.search-input');
+            const searchResults = document.querySelector('.search-results');
+            
+            searchInput.addEventListener('input', function() {
+                const termo = this.value.toLowerCase();
+                
+                if (termo.length < 2) {
+                    searchResults.style.display = 'none';
+                    return;
+                }
+                
+                let resultados = [];
+                
+                // Pesquisar nos títulos dos fenómenos
+                document.querySelectorAll('.fenomeno-titulo h3').forEach(titulo => {
+                    const textoTitulo = titulo.textContent.toLowerCase();
+                    if (textoTitulo.includes(termo)) {
+                        resultados.push({
+                            texto: titulo.textContent,
+                            tipo: 'fenomeno'
+                        });
+                    }
+                });
+                
+                // Pesquisar no glossário
+                document.querySelectorAll('.glossario-termo').forEach(termo => {
+                    const textoTermo = termo.textContent.toLowerCase();
+                    if (textoTermo.includes(termo)) {
+                        resultados.push({
+                            texto: termo.textContent,
+                            tipo: 'glossario'
+                        });
+                    }
+                });
+                
+                if (resultados.length > 0) {
+                    let html = '';
+                    resultados.forEach(resultado => {
+                        html += `<div class="search-result-item" data-tipo="${resultado.tipo}">${resultado.texto}</div>`;
+                    });
+                    
+                    searchResults.innerHTML = html;
+                    searchResults.style.display = 'block';
+                    
+                    document.querySelectorAll('.search-result-item').forEach(item => {
+                        item.addEventListener('click', function() {
+                            const tipo = this.getAttribute('data-tipo');
+                            const texto = this.textContent;
+                            
+                            if (tipo === 'fenomeno') {
+                                ativarAba('fenomenos');
+                                
+                                // Encontrar e expandir o fenômeno correspondente
+                                document.querySelectorAll('.fenomeno-titulo h3').forEach(titulo => {
+                                    if (titulo.textContent.includes(texto)) {
+                                        const fenomenoCard = titulo.closest('.fenomeno-card');
+                                        const fenomenoConteudo = fenomenoCard.querySelector('.fenomeno-conteudo');
+                                        const icone = fenomenoCard.querySelector('.fenomeno-titulo span');
+                                        
+                                        fenomenoConteudo.classList.add('aberto');
+                                        icone.textContent = '-';
+                                        
+                                        fenomenoCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                    }
+                                });
+                            } else if (tipo === 'glossario') {
+                                ativarAba('glossario');
+                                
+                                // Encontrar e destacar o termo do glossário
+                                document.querySelectorAll('.glossario-termo').forEach(termo => {
+                                    if (termo.textContent.includes(texto)) {
+                                        const glossarioItem = termo.closest('.glossario-item');
+                                        glossarioItem.style.backgroundColor = '#e8f5e9';
+                                        setTimeout(() => {
+                                            glossarioItem.style.backgroundColor = '';
+                                        }, 3000);
+                                        
+                                        glossarioItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                    }
+                                });
+                            }
+                            
+                            searchResults.style.display = 'none';
+                            searchInput.value = '';
+                        });
+                    });
+                } else {
+                    searchResults.innerHTML = '<div class="search-result-item">Nenhum resultado encontrado</div>';
+                    searchResults.style.display = 'block';
+                }
+            });
+            
+            // Fechar resultados da pesquisa ao clicar fora
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('.search-container')) {
+                    searchResults.style.display = 'none';
+                }
+            });
+            
+            // Expandir primeiro fenômeno de cada categoria por padrão
+            document.querySelectorAll('h3 + .fenomeno-card').forEach(card => {
+                const conteudo = card.querySelector('.fenomeno-conteudo');
+                const icone = card.querySelector('.fenomeno-titulo span');
+                conteudo.classList.add('aberto');
+                icone.textContent = '-';
+            });
+            
+            // Filtro de exercícios
+            document.querySelectorAll('.filtro-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const filtro = this.getAttribute('data-filtro');
+                    
+                    document.querySelectorAll('.filtro-btn').forEach(b => {
+                        b.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    document.querySelectorAll('.exercicio').forEach(exercicio => {
+                        if (filtro === 'todos' || exercicio.getAttribute('data-categoria') === filtro) {
+                            exercicio.style.display = 'block';
+                        } else {
+                            exercicio.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // Paginação de exercícios
+            const exerciciosPorPagina = 3;
+            let paginaAtual = 1;
+            const totalExercicios = document.querySelectorAll('.exercicio').length;
+            const totalPaginas = Math.ceil(totalExercicios / exerciciosPorPagina);
+            
+            function atualizarPaginacaoExercicios() {
+                // Atualizar a exibição dos exercícios
+                document.querySelectorAll('.exercicio').forEach((exercicio, index) => {
+                    const inicioIntervalo = (paginaAtual - 1) * exerciciosPorPagina;
+                    const fimIntervalo = inicioIntervalo + exerciciosPorPagina;
+                    
+                    if (index >= inicioIntervalo && index < fimIntervalo) {
+                        exercicio.style.display = 'block';
+                    } else {
+                        exercicio.style.display = 'none';
+                    }
+                });
+                
+                // Atualizar os botões de navegação
+                document.getElementById('exercicio-anterior').disabled = paginaAtual === 1;
+                document.getElementById('exercicio-seguinte').disabled = paginaAtual === totalPaginas;
+                
+                // Atualizar o indicador de paginação
+                const paginacaoContainer = document.getElementById('paginacao-exercicios');
+                paginacaoContainer.innerHTML = '';
+                
+                for (let i = 1; i <= totalPaginas; i++) {
+                    const paginaBtn = document.createElement('button');
+                    paginaBtn.innerText = i;
+                    paginaBtn.classList.add('pagina-btn');
+                    
+                    if (i === paginaAtual) {
+                        paginaBtn.classList.add('active');
+                    }
+                    
+                    paginaBtn.addEventListener('click', function() {
+                        paginaAtual = i;
+                        atualizarPaginacaoExercicios();
+                    });
+                    
+                    paginacaoContainer.appendChild(paginaBtn);
+                }
+            }
+            
+            document.getElementById('exercicio-anterior').addEventListener('click', function() {
+                if (paginaAtual > 1) {
+                    paginaAtual--;
+                    atualizarPaginacaoExercicios();
+                }
+            });
+            
+            document.getElementById('exercicio-seguinte').addEventListener('click', function() {
+                if (paginaAtual < totalPaginas) {
+                    paginaAtual++;
+                    atualizarPaginacaoExercicios();
+                }
+            });
+            
+            // Iniciar paginação
+            atualizarPaginacaoExercicios();
+        });
+
+        // Dados para acompanhamento de progresso
+        let progresso = {
+            fenomenosVistos: [],
+            exerciciosCompletos: 0,
+            quizPontuacao: 0
+        };
+
+        // Salvar progresso no localStorage
+        function salvarProgresso() {
+            localStorage.setItem('fonepticapt-progresso', JSON.stringify(progresso));
+        }
+
+        // Carregar progresso do localStorage
+        function carregarProgresso() {
+            const progressoSalvo = localStorage.getItem('fonepticapt-progresso');
+            if (progressoSalvo) {
+                progresso = JSON.parse(progressoSalvo);
+                
+                // Atualizar a exibição com base no progresso salvo
+                document.querySelectorAll('.fenomeno-card').forEach(card => {
+                    const titulo = card.querySelector('.fenomeno-titulo h3').textContent;
+                    if (progresso.fenomenosVistos.includes(titulo)) {
+                        // Adicionar marcador de "lido" ao card
+                        const badge = document.createElement('span');
+                        badge.className = 'badge';
+                        badge.textContent = 'Visto';
+                        badge.style.backgroundColor = '#4caf50';
+                        card.querySelector('.fenomeno-titulo').appendChild(badge);
+                    }
+                });
+                
+                // Atualizar contadores
+                exerciciosCorretos = progresso.exerciciosCompletos;
+                const percentagemConcluida = (exerciciosCorretos / totalExercicios) * 100;
+                document.getElementById('progresso-exercicios').style.width = percentagemConcluida + '%';
+                document.getElementById('resultado-exercicios').innerText = `Pontuação: ${exerciciosCorretos}/${totalExercicios}`;
+            }
+        }
+
+        // Registrar visualização de fenômenos
+        document.querySelectorAll('.fenomeno-titulo').forEach(titulo => {
+            titulo.addEventListener('click', function() {
+                const tituloTexto = this.querySelector('h3').textContent;
+                if (!progresso.fenomenosVistos.includes(tituloTexto)) {
+                    progresso.fenomenosVistos.push(tituloTexto);
+                    salvarProgresso();
+                    
+                    // Adicionar marcador de "lido" ao card
+                    if (!this.querySelector('.badge')) {
+                        const badge = document.createElement('span');
+                        badge.className = 'badge';
+                        badge.textContent = 'Visto';
+                        badge.style.backgroundColor = '#4caf50';
+                        this.appendChild(badge);
+                    }
+                }
+            });
+        });
+
+        // Registro de conclusão de exercícios
+        document.querySelectorAll('[id^="verificar"]').forEach(botao => {
+            const botaoOriginalClick = botao.onclick;
+            botao.onclick = function() {
+                // Chamar o manipulador original
+                botaoOriginalClick.call(this);
+                
+                // Atualizar o progresso
+                progresso.exerciciosCompletos = exerciciosCorretos;
+                salvarProgresso();
+            };
+        });
+
+        // Registro de pontuação do quiz
+        const quizOriginalResultado = mostrarResultado;
+        mostrarResultado = function() {
+            // Chamar a função original
+            quizOriginalResultado();
+            
+            // Atualizar o progresso
+            progresso.quizPontuacao = pontuacao;
+            salvarProgresso();
+        };
+
+        // Carregar progresso ao iniciar
+        carregarProgresso();
+        
+        // Botão para reiniciar o progresso
+        const reiniciarBtn = document.createElement('button');
+        reiniciarBtn.textContent = 'Reiniciar Progresso';
+        reiniciarBtn.style.backgroundColor = '#f44336';
+        reiniciarBtn.style.marginTop = '2rem';
+        document.querySelector('.container').appendChild(reiniciarBtn);
+        
+        reiniciarBtn.addEventListener('click', function() {
+            if (confirm('Tens a certeza que queres reiniciar todo o teu progresso?')) {
+                localStorage.removeItem('fonepticapt-progresso');
+                location.reload();
+            }
+        });
+    </script>
+</body>
+</html>
