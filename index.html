@@ -763,7 +763,215 @@
 
             <div style="margin: 2rem 0; background-color: #e8f5e9; padding: 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
                 <h3 style="color: var(--cor-primaria); margin-top: 0;">Mapa Mental dos Fenómenos Fonéticos</h3>
-                <img src="/api/placeholder/800/500" alt="Mapa Mental dos Fenómenos Fonéticos" style="width: 100%; border-radius: 8px; margin: 1rem 0;" />
+                <svg viewBox="0 0 1000 600" xmlns="http://www.w3.org/2000/svg" style="width: 100%; border-radius: 8px; margin: 1rem 0; background-color: white;">
+                    <!-- Título central -->
+                    <g>
+                        <ellipse cx="500" cy="100" rx="180" ry="60" fill="#4CAF50" />
+                        <text x="500" y="105" font-family="Arial" font-size="20" font-weight="bold" fill="white" text-anchor="middle">FENÓMENOS FONÉTICOS</text>
+                    </g>
+                    
+                    <!-- Linhas conectoras principais -->
+                    <line x1="500" y1="160" x2="250" y2="230" stroke="#2E7D32" stroke-width="3" />
+                    <line x1="500" y1="160" x2="500" y2="230" stroke="#2E7D32" stroke-width="3" />
+                    <line x1="500" y1="160" x2="750" y2="230" stroke="#2E7D32" stroke-width="3" />
+                    <line x1="500" y1="160" x2="900" y2="230" stroke="#2E7D32" stroke-width="3" />
+                    
+                    <!-- Categoria 1: Adição -->
+                    <g>
+                        <rect x="150" y="230" width="200" ry="20" rx="20" height="50" fill="#8BC34A" />
+                        <text x="250" y="260" font-family="Arial" font-size="18" font-weight="bold" fill="white" text-anchor="middle">ADIÇÃO</text>
+                        
+                        <!-- Conectores -->
+                        <line x1="250" y1="280" x2="150" y2="330" stroke="#8BC34A" stroke-width="2" />
+                        <line x1="250" y1="280" x2="250" y2="330" stroke="#8BC34A" stroke-width="2" />
+                        <line x1="250" y1="280" x2="350" y2="330" stroke="#8BC34A" stroke-width="2" />
+                        
+                        <!-- Fenómenos de Adição -->
+                        <g>
+                            <rect x="80" y="330" width="140" height="40" rx="10" ry="10" fill="#C5E1A5" />
+                            <text x="150" y="355" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">Prótese</text>
+                            <text x="150" y="375" font-family="Arial" font-size="10" fill="#555" text-anchor="middle">(adição no início)</text>
+                        </g>
+                        
+                        <g>
+                            <rect x="180" y="330" width="140" height="40" rx="10" ry="10" fill="#C5E1A5" />
+                            <text x="250" y="355" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">Epêntese</text>
+                            <text x="250" y="375" font-family="Arial" font-size="10" fill="#555" text-anchor="middle">(adição no meio)</text>
+                        </g>
+                        
+                        <g>
+                            <rect x="280" y="330" width="140" height="40" rx="10" ry="10" fill="#C5E1A5" />
+                            <text x="350" y="355" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">Paragoge</text>
+                            <text x="350" y="375" font-family="Arial" font-size="10" fill="#555" text-anchor="middle">(adição no fim)</text>
+                        </g>
+                    </g>
+                    
+                    <!-- Categoria 2: Supressão -->
+                    <g>
+                        <rect x="400" y="230" width="200" ry="20" rx="20" height="50" fill="#F44336" />
+                        <text x="500" y="260" font-family="Arial" font-size="18" font-weight="bold" fill="white" text-anchor="middle">SUPRESSÃO</text>
+                        
+                        <!-- Conectores -->
+                        <line x1="500" y1="280" x2="400" y2="330" stroke="#F44336" stroke-width="2" />
+                        <line x1="500" y1="280" x2="450" y2="330" stroke="#F44336" stroke-width="2" />
+                        <line x1="500" y1="280" x2="500" y2="330" stroke="#F44336" stroke-width="2" />
+                        <line x1="500" y1="280" x2="550" y2="330" stroke="#F44336" stroke-width="2" />
+                        <line x1="500" y1="280" x2="600" y2="330" stroke="#F44336" stroke-width="2" />
+                        
+                        <!-- Fenómenos de Supressão -->
+                        <g>
+                            <rect x="330" y="330" width="140" height="40" rx="10" ry="10" fill="#FFCDD2" />
+                            <text x="400" y="355" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">Aférese</text>
+                            <text x="400" y="375" font-family="Arial" font-size="10" fill="#555" text-anchor="middle">(supressão no início)</text>
+                        </g>
+                        
+                        <g>
+                            <rect x="380" y="390" width="140" height="40" rx="10" ry="10" fill="#FFCDD2" />
+                            <text x="450" y="415" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">Síncope</text>
+                            <text x="450" y="435" font-family="Arial" font-size="10" fill="#555" text-anchor="middle">(supressão no meio)</text>
+                        </g>
+                        
+                        <g>
+                            <rect x="430" y="330" width="140" height="40" rx="10" ry="10" fill="#FFCDD2" />
+                            <text x="500" y="355" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">Apócope</text>
+                            <text x="500" y="375" font-family="Arial" font-size="10" fill="#555" text-anchor="middle">(supressão no fim)</text>
+                        </g>
+                        
+                        <g>
+                            <rect x="480" y="390" width="140" height="40" rx="10" ry="10" fill="#FFCDD2" />
+                            <text x="550" y="415" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">Crase</text>
+                            <text x="550" y="435" font-family="Arial" font-size="10" fill="#555" text-anchor="middle">(fusão de vogais iguais)</text>
+                        </g>
+                        
+                        <g>
+                            <rect x="530" y="330" width="140" height="40" rx="10" ry="10" fill="#FFCDD2" />
+                            <text x="600" y="355" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">Elisão</text>
+                            <text x="600" y="375" font-family="Arial" font-size="10" fill="#555" text-anchor="middle">(supressão de vogal átona)</text>
+                        </g>
+                    </g>
+                    
+                    <!-- Categoria 3: Permuta -->
+                    <g>
+                        <rect x="650" y="230" width="200" ry="20" rx="20" height="50" fill="#2196F3" />
+                        <text x="750" y="260" font-family="Arial" font-size="18" font-weight="bold" fill="white" text-anchor="middle">PERMUTA</text>
+                        
+                        <!-- Conectores -->
+                        <line x1="750" y1="280" x2="750" y2="330" stroke="#2196F3" stroke-width="2" />
+                        
+                        <!-- Fenómenos de Permuta -->
+                        <g>
+                            <rect x="680" y="330" width="140" height="40" rx="10" ry="10" fill="#BBDEFB" />
+                            <text x="750" y="355" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">Metátese</text>
+                            <text x="750" y="375" font-family="Arial" font-size="10" fill="#555" text-anchor="middle">(troca de posição)</text>
+                        </g>
+                    </g>
+                    
+                    <!-- Categoria 4: Transformação -->
+                    <g>
+                        <rect x="800" y="230" width="200" ry="20" rx="20" height="50" fill="#9C27B0" />
+                        <text x="900" y="260" font-family="Arial" font-size="18" font-weight="bold" fill="white" text-anchor="middle">TRANSFORMAÇÃO</text>
+                        
+                        <!-- Conectores -->
+                        <line x1="900" y1="280" x2="800" y2="330" stroke="#9C27B0" stroke-width="2" />
+                        <line x1="900" y1="280" x2="850" y2="330" stroke="#9C27B0" stroke-width="2" />
+                        <line x1="900" y1="280" x2="900" y2="330" stroke="#9C27B0" stroke-width="2" />
+                        <line x1="900" y1="280" x2="950" y2="330" stroke="#9C27B0" stroke-width="2" />
+                        <line x1="900" y1="280" x2="1000" y2="330" stroke="#9C27B0" stroke-width="2" />
+                        <line x1="900" y1="280" x2="800" y2="390" stroke="#9C27B0" stroke-width="2" />
+                        <line x1="900" y1="280" x2="900" y2="390" stroke="#9C27B0" stroke-width="2" />
+                        <line x1="900" y1="280" x2="1000" y2="390" stroke="#9C27B0" stroke-width="2" />
+                        
+                        <!-- Fenómenos de Transformação -->
+                        <g>
+                            <rect x="730" y="330" width="140" height="40" rx="10" ry="10" fill="#E1BEE7" />
+                            <text x="800" y="355" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">Assimilação</text>
+                            <text x="800" y="375" font-family="Arial" font-size="10" fill="#555" text-anchor="middle">(som torna-se semelhante)</text>
+                        </g>
+                        
+                        <g>
+                            <rect x="780" y="390" width="140" height="40" rx="10" ry="10" fill="#E1BEE7" />
+                            <text x="850" y="415" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">Dissimilação</text>
+                            <text x="850" y="435" font-family="Arial" font-size="10" fill="#555" text-anchor="middle">(som torna-se diferente)</text>
+                        </g>
+                        
+                        <g>
+                            <rect x="830" y="330" width="140" height="40" rx="10" ry="10" fill="#E1BEE7" />
+                            <text x="900" y="355" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">Nasalização</text>
+                            <text x="900" y="375" font-family="Arial" font-size="10" fill="#555" text-anchor="middle">(vogal oral → nasal)</text>
+                        </g>
+                        
+                        <g>
+                            <rect x="880" y="390" width="140" height="40" rx="10" ry="10" fill="#E1BEE7" />
+                            <text x="950" y="415" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">Vocalização</text>
+                            <text x="950" y="435" font-family="Arial" font-size="10" fill="#555" text-anchor="middle">(consoante → vogal)</text>
+                        </g>
+                        
+                        <g>
+                            <rect x="930" y="330" width="140" height="40" rx="10" ry="10" fill="#E1BEE7" />
+                            <text x="1000" y="355" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">Ditongação</text>
+                            <text x="1000" y="375" font-family="Arial" font-size="10" fill="#555" text-anchor="middle">(vogais → ditongo)</text>
+                        </g>
+                        
+                        <g>
+                            <rect x="730" y="450" width="140" height="40" rx="10" ry="10" fill="#E1BEE7" />
+                            <text x="800" y="475" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">Monotongação</text>
+                            <text x="800" y="495" font-family="Arial" font-size="10" fill="#555" text-anchor="middle">(ditongo → vogal)</text>
+                        </g>
+                        
+                        <g>
+                            <rect x="830" y="450" width="140" height="40" rx="10" ry="10" fill="#E1BEE7" />
+                            <text x="900" y="475" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">Metafonia</text>
+                            <text x="900" y="495" font-family="Arial" font-size="10" fill="#555" text-anchor="middle">(alteração vogal tónica)</text>
+                        </g>
+                        
+                        <g>
+                            <rect x="930" y="450" width="140" height="40" rx="10" ry="10" fill="#E1BEE7" />
+                            <text x="1000" y="475" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">Sonorização</text>
+                            <text x="1000" y="495" font-family="Arial" font-size="10" fill="#555" text-anchor="middle">(consoante surda → sonora)</text>
+                        </g>
+                    </g>
+                    
+                    <!-- Exemplos em pequenas notas -->
+                    <g>
+                        <rect x="80" y="390" width="140" height="30" rx="15" ry="15" fill="#DCEDC8" stroke="#8BC34A" />
+                        <text x="150" y="410" font-family="Arial" font-style="italic" font-size="11" fill="#333" text-anchor="middle">Ex: spiritu → espírito</text>
+                    </g>
+                    
+                    <g>
+                        <rect x="180" y="390" width="140" height="30" rx="15" ry="15" fill="#DCEDC8" stroke="#8BC34A" />
+                        <text x="250" y="410" font-family="Arial" font-style="italic" font-size="11" fill="#333" text-anchor="middle">Ex: area → areia</text>
+                    </g>
+                    
+                    <g>
+                        <rect x="280" y="390" width="140" height="30" rx="15" ry="15" fill="#DCEDC8" stroke="#8BC34A" />
+                        <text x="350" y="410" font-family="Arial" font-style="italic" font-size="11" fill="#333" text-anchor="middle">Ex: ante → antes</text>
+                    </g>
+                    
+                    <g>
+                        <rect x="330" y="450" width="140" height="30" rx="15" ry="15" fill="#FFEBEE" stroke="#F44336" />
+                        <text x="400" y="470" font-family="Arial" font-style="italic" font-size="11" fill="#333" text-anchor="middle">Ex: episcopus → bispo</text>
+                    </g>
+                    
+                    <g>
+                        <rect x="530" y="450" width="140" height="30" rx="15" ry="15" fill="#FFEBEE" stroke="#F44336" />
+                        <text x="600" y="470" font-family="Arial" font-style="italic" font-size="11" fill="#333" text-anchor="middle">Ex: de água → d'água</text>
+                    </g>
+                    
+                    <g>
+                        <rect x="680" y="390" width="140" height="30" rx="15" ry="15" fill="#E3F2FD" stroke="#2196F3" />
+                        <text x="750" y="410" font-family="Arial" font-style="italic" font-size="11" fill="#333" text-anchor="middle">Ex: semper → sempre</text>
+                    </g>
+                    
+                    <g>
+                        <rect x="830" y="500" width="140" height="30" rx="15" ry="15" fill="#F3E5F5" stroke="#9C27B0" />
+                        <text x="900" y="520" font-family="Arial" font-style="italic" font-size="11" fill="#333" text-anchor="middle">Ex: novo/nova</text>
+                    </g>
+                    
+                    <g>
+                        <rect x="930" y="500" width="140" height="30" rx="15" ry="15" fill="#F3E5F5" stroke="#9C27B0" />
+                        <text x="1000" y="520" font-family="Arial" font-style="italic" font-size="11" fill="#333" text-anchor="middle">Ex: lupu → lobo</text>
+                    </g>
+                </svg>
                 <p style="text-align: center; font-style: italic;">Este mapa mental mostra a classificação dos principais fenómenos fonéticos da língua portuguesa.</p>
             </div>
 
